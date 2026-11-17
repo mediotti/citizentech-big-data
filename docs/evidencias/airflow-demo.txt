@@ -1,0 +1,7 @@
+2026-11-17T22:02:56.139332Z  Ingestão concluída: origem=demo páginas=3 recebidos=240
+2026-11-17T22:02:56.178420Z  Tratamento concluído: válidos=240 rejeitados=0 motivos={}
+2026-11-17T22:02:56.208881Z  Ranking: bairros=6 com contexto distrital completo=6
+2026-11-17T22:02:56.209505Z  Carga SQLite concluída: fato_ocorrencia=240
+2026-11-17T22:02:56.239720Z  Qualidade aprovada: recebidos=240 publicados=240 apoios=2420
+2026-11-17T22:02:56.268872Z  Painel publicado: origem=demo grupos=202
+2026-11-17T22:02:56.277722Z  DagRun Finished: zelai_ocorrencias state=success

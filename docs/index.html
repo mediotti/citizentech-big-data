@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZelaAí · Indicadores de zeladoria</title>
+<style>
+  :root { color-scheme: light; font: 16px system-ui, sans-serif; color: #1c2b24; background: #f4f5ef; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  header { background: #143b2d; color: white; }
+  header div, main { width: min(1060px, 100% - 2rem); margin: auto; }
+  header div { padding: 2rem 0; }
+  h1 { margin: .3rem 0; font-size: clamp(1.8rem, 5vw, 2.8rem); letter-spacing: -.035em; }
+  header span { color: #d1f1d3; font-weight: 700; }
+  main { padding: 1.5rem 0 3rem; display: grid; gap: 1.2rem; }
+  h2, p { margin: 0; }
+  h2 { font-size: 1.25rem; }
+  .section { background: white; border: 1px solid #d4ddd3; border-radius: .8rem; padding: 1rem; min-width: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 172px), 1fr)); gap: .8rem; }
+  .metric { border-radius: .65rem; padding: .85rem; background: #eaf4eb; }
+  .metric strong { display: block; font-size: 1.7rem; color: #143b2d; }
+  .small { color: #45594d; margin-top: .35rem; font-size: .92rem; }
+  .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: .65rem; margin: .8rem 0; }
+  label { font-weight: 650; }
+  select { font: inherit; display: block; width: 100%; margin-top: .25rem; padding: .45rem; border: 1px solid #687b70; border-radius: .35rem; background: white; color: inherit; }
+  :focus-visible { outline: 3px solid #17805b; outline-offset: 3px; }
+  .scroll { overflow-x: auto; margin-top: .65rem; }
+  table { border-collapse: collapse; width: 100%; text-align: left; font-variant-numeric: tabular-nums; }
+  th, td { padding: .55rem; border-bottom: 1px solid #d4ddd3; }
+  th { background: #edf1eb; }
+  .num { text-align: right; white-space: nowrap; }
+  a { color: #155c47; }
+</style>
+<header><div>
+  <span>ZelaAí</span>
+  <h1>Indicadores de zeladoria</h1>
+  <p id="source">Carregando origem do lote</p>
+</div></header>
+<main>
+  <section class="section" aria-labelledby="priority">
+    <h2 id="priority">Prioridade por bairro em São Paulo</h2>
+    <p class="small">A pontuação de 0 a 100 apoia a análise da equipe de zeladoria.</p>
+    <div class="scroll" tabindex="0" role="region" aria-label="Tabela de prioridade">
+      <table><thead><tr><th scope="col">Bairro</th><th scope="col" class="num">Ocorrências</th><th scope="col" class="num">Apoios</th><th scope="col" class="num">Pessoas 60+ no distrito</th><th scope="col" class="num">Pontuação</th></tr></thead>
+      <tbody id="ranking"></tbody></table>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="portfolio">
+    <h2 id="portfolio">Acompanhamento das ocorrências</h2>
+    <div class="filters">
+      <label>Cidade e bairro<select id="area"></select></label>
+      <label>Categoria<select id="category"></select></label>
+      <label>Status<select id="status"></select></label>
+      <label>Urgência<select id="urgency"></select></label>
+    </div>
+    <div id="metrics" class="grid" aria-live="polite">
+      <div class="metric"><strong id="total">0</strong> Ocorrências</div>
+      <div class="metric"><strong id="pending">0</strong> Aguardando aprovação</div>
+      <div class="metric"><strong id="critical">0</strong> Em aberto com urgência alta</div>
+      <div class="metric"><strong id="resolved">0%</strong> Resolvidas</div>
+    </div>
+    <div class="scroll" tabindex="0" role="region" aria-label="Ocorrências agrupadas">
+      <table><thead><tr><th scope="col">Cidade e bairro</th><th scope="col">Categoria</th><th scope="col">Status</th><th scope="col">Urgência</th><th scope="col" class="num">Ocorrências</th><th scope="col" class="num">Apoios</th></tr></thead>
+      <tbody id="results"></tbody></table>
+    </div>
+  </section>
+  <footer><a href="https://zelai-api.azurewebsites.net/docs">Documentação da API ZelaAí</a></footer>
+</main>
+<script type="application/json" id="snapshot">{"mode": "demo", "timestamp": "2026-11-17T22:02:56.138494+00:00", "rows": [["são paulo", "bela vista", "acessibilidade", "aprovada", "alta", 2, 29], ["são paulo", "bela vista", "acessibilidade", "rejeitada", "media", 2, 26], ["são paulo", "bela vista", "acessibilidade", "resolvida", "alta", 3, 28], ["são paulo", "bela vista", "acessibilidade", "resolvida", "baixa", 1, 4], ["são paulo", "bela vista", "buraco", "rejeitada", "media", 1, 7], ["são paulo", "bela vista", "buraco", "resolvida", "alta", 1, 8], ["são paulo", "bela vista", "calcada", "aprovada", "baixa", 2, 21], ["são paulo", "bela vista", "calcada", "protocolada", "media", 1, 11], ["são paulo", "bela vista", "calcada", "rejeitada", "alta", 1, 14], ["são paulo", "bela vista", "calcada", "rejeitada", "media", 1, 9], ["são paulo", "bela vista", "calcada", "resolvida", "alta", 1, 13], ["são paulo", "bela vista", "iluminacao", "aguardando_aprovacao", "alta", 1, 2], ["são paulo", "bela vista", "iluminacao", "protocolada", "alta", 1, 18], ["são paulo", "bela vista", "iluminacao", "protocolada", "baixa", 1, 18], ["são paulo", "bela vista", "iluminacao", "resolvida", "media", 1, 11], ["são paulo", "bela vista", "lixo", "aguardando_aprovacao", "baixa", 2, 26], ["são paulo", "bela vista", "lixo", "aguardando_aprovacao", "media", 1, 5], ["são paulo", "bela vista", "lixo", "protocolada", "media", 1, 13], ["são paulo", "bela vista", "lixo", "resolvida", "alta", 2, 24], ["são paulo", "bela vista", "outros", "aguardando_aprovacao", "baixa", 2, 19], ["são paulo", "bela vista", "outros", "aguardando_aprovacao", "media", 2, 12], ["são paulo", "bela vista", "outros", "aprovada", "baixa", 1, 8], ["são paulo", "bela vista", "outros", "protocolada", "baixa", 1, 9], ["são paulo", "bela vista", "outros", "protocolada", "media", 2, 9], ["são paulo", "bela vista", "ponto_onibus", "aguardando_aprovacao", "baixa", 2, 30], ["são paulo", "bela vista", "ponto_onibus", "aguardando_aprovacao", "media", 1, 16], ["são paulo", "bela vista", "ponto_onibus", "protocolada", "baixa", 1, 5], ["são paulo", "bela vista", "ponto_onibus", "protocolada", "media", 1, 3], ["são paulo", "bela vista", "ponto_onibus", "rejeitada", "baixa", 1, 13], ["são paulo", "bela vista", "ponto_onibus", "resolvida", "baixa", 1, 7], ["são paulo", "bela vista", "semaforo", "aguardando_aprovacao", "baixa", 1, 11], ["são paulo", "bela vista", "semaforo", "aguardando_aprovacao", "media", 1, 18], ["são paulo", "bela vista", "semaforo", "protocolada", "baixa", 1, 13], ["são paulo", "bela vista", "semaforo", "resolvida", "baixa", 1, 15], ["são paulo", "ipiranga", "acessibilidade", "aguardando_aprovacao", "baixa", 1, 8], ["são paulo", "ipiranga", "acessibilidade", "aprovada", "alta", 1, 11], ["são paulo", "ipiranga", "acessibilidade", "rejeitada", "media", 1, 2], ["são paulo", "ipiranga", "acessibilidade", "resolvida", "baixa", 1, 9], ["são paulo", "ipiranga", "buraco", "aguardando_aprovacao", "alta", 2, 24], ["são paulo", "ipiranga", "buraco", "aguardando_aprovacao", "media", 1, 11], ["são paulo", "ipiranga", "buraco", "protocolada", "baixa", 1, 17], ["são paulo", "ipiranga", "buraco", "rejeitada", "alta", 1, 8], ["são paulo", "ipiranga", "buraco", "resolvida", "media", 1, 1], ["são paulo", "ipiranga", "calcada", "aguardando_aprovacao", "alta", 1, 17], ["são paulo", "ipiranga", "calcada", "resolvida", "alta", 1, 0], ["são paulo", "ipiranga", "calcada", "resolvida", "baixa", 1, 18], ["são paulo", "ipiranga", "calcada", "resolvida", "media", 1, 13], ["são paulo", "ipiranga", "iluminacao", "aguardando_aprovacao", "baixa", 1, 4], ["são paulo", "ipiranga", "iluminacao", "aguardando_aprovacao", "media", 1, 5], ["são paulo", "ipiranga", "iluminacao", "aprovada", "baixa", 1, 15], ["são paulo", "ipiranga", "iluminacao", "resolvida", "alta", 1, 5], ["são paulo", "ipiranga", "iluminacao", "resolvida", "baixa", 1, 2], ["são paulo", "ipiranga", "lixo", "aguardando_aprovacao", "baixa", 1, 16], ["são paulo", "ipiranga", "lixo", "resolvida", "alta", 1, 8], ["são paulo", "ipiranga", "lixo", "resolvida", "media", 2, 20], ["são paulo", "ipiranga", "outros", "protocolada", "media", 1, 8], ["são paulo", "ipiranga", "outros", "resolvida", "alta", 1, 19], ["são paulo", "ipiranga", "outros", "resolvida", "baixa", 1, 12], ["são paulo", "ipiranga", "ponto_onibus", "aguardando_aprovacao", "media", 2, 30], ["são paulo", "ipiranga", "ponto_onibus", "aprovada", "baixa", 1, 19], ["são paulo", "ipiranga", "ponto_onibus", "aprovada", "media", 1, 14], ["são paulo", "ipiranga", "ponto_onibus", "protocolada", "media", 1, 15], ["são paulo", "ipiranga", "ponto_onibus", "resolvida", "baixa", 1, 19], ["são paulo", "ipiranga", "semaforo", "aguardando_aprovacao", "baixa", 1, 6], ["são paulo", "ipiranga", "semaforo", "aguardando_aprovacao", "media", 1, 2], ["são paulo", "ipiranga", "semaforo", "protocolada", "alta", 1, 8], ["são paulo", "lapa", "acessibilidade", "aguardando_aprovacao", "baixa", 1, 4], ["são paulo", "lapa", "acessibilidade", "aprovada", "alta", 1, 9], ["são paulo", "lapa", "acessibilidade", "aprovada", "media", 2, 26], ["são paulo", "lapa", "acessibilidade", "resolvida", "alta", 2, 18], ["são paulo", "lapa", "acessibilidade", "resolvida", "baixa", 2, 31], ["são paulo", "lapa", "buraco", "aguardando_aprovacao", "baixa", 2, 21], ["são paulo", "lapa", "buraco", "aprovada", "media", 1, 8], ["são paulo", "lapa", "buraco", "protocolada", "baixa", 1, 16], ["são paulo", "lapa", "buraco", "rejeitada", "alta", 1, 0], ["são paulo", "lapa", "buraco", "resolvida", "baixa", 1, 13], ["são paulo", "lapa", "calcada", "aguardando_aprovacao", "alta", 1, 2], ["são paulo", "lapa", "calcada", "aprovada", "baixa", 1, 3], ["são paulo", "lapa", "calcada", "resolvida", "media", 1, 18], ["são paulo", "lapa", "iluminacao", "aprovada", "alta", 1, 19], ["são paulo", "lapa", "iluminacao", "aprovada", "baixa", 1, 19], ["são paulo", "lapa", "iluminacao", "aprovada", "media", 1, 3], ["são paulo", "lapa", "iluminacao", "protocolada", "media", 1, 16], ["são paulo", "lapa", "iluminacao", "resolvida", "baixa", 1, 3], ["são paulo", "lapa", "iluminacao", "resolvida", "media", 1, 14], ["são paulo", "lapa", "lixo", "aprovada", "alta", 1, 12], ["são paulo", "lapa", "lixo", "aprovada", "baixa", 1, 3], ["são paulo", "lapa", "lixo", "protocolada", "alta", 1, 0], ["são paulo", "lapa", "lixo", "protocolada", "media", 1, 6], ["são paulo", "lapa", "outros", "aguardando_aprovacao", "baixa", 2, 15], ["são paulo", "lapa", "outros", "aprovada", "baixa", 2, 26], ["são paulo", "lapa", "outros", "protocolada", "alta", 1, 1], ["são paulo", "lapa", "outros", "resolvida", "baixa", 1, 3], ["são paulo", "lapa", "ponto_onibus", "aguardando_aprovacao", "alta", 1, 9], ["são paulo", "lapa", "ponto_onibus", "aguardando_aprovacao", "baixa", 1, 2], ["são paulo", "lapa", "ponto_onibus", "aprovada", "baixa", 2, 24], ["são paulo", "lapa", "ponto_onibus", "protocolada", "media", 1, 17], ["são paulo", "lapa", "ponto_onibus", "rejeitada", "baixa", 1, 2], ["são paulo", "lapa", "semaforo", "aguardando_aprovacao", "media", 2, 30], ["são paulo", "lapa", "semaforo", "resolvida", "baixa", 1, 12], ["são paulo", "mooca", "acessibilidade", "aprovada", "media", 1, 9], ["são paulo", "mooca", "acessibilidade", "protocolada", "media", 1, 2], ["são paulo", "mooca", "acessibilidade", "rejeitada", "baixa", 1, 15], ["são paulo", "mooca", "buraco", "aguardando_aprovacao", "baixa", 1, 8], ["são paulo", "mooca", "buraco", "rejeitada", "media", 1, 10], ["são paulo", "mooca", "calcada", "aguardando_aprovacao", "baixa", 1, 8], ["são paulo", "mooca", "calcada", "resolvida", "media", 1, 12], ["são paulo", "mooca", "iluminacao", "aguardando_aprovacao", "media", 1, 13], ["são paulo", "mooca", "iluminacao", "aprovada", "baixa", 1, 13], ["são paulo", "mooca", "lixo", "protocolada", "media", 2, 21], ["são paulo", "mooca", "lixo", "resolvida", "baixa", 1, 18], ["são paulo", "mooca", "lixo", "resolvida", "media", 2, 33], ["são paulo", "mooca", "outros", "aguardando_aprovacao", "baixa", 1, 2], ["são paulo", "mooca", "outros", "aguardando_aprovacao", "media", 1, 6], ["são paulo", "mooca", "outros", "protocolada", "media", 1, 13], ["são paulo", "mooca", "outros", "resolvida", "media", 1, 11], ["são paulo", "mooca", "ponto_onibus", "aguardando_aprovacao", "media", 2, 15], ["são paulo", "mooca", "ponto_onibus", "protocolada", "baixa", 1, 7], ["são paulo", "mooca", "ponto_onibus", "protocolada", "media", 1, 9], ["são paulo", "mooca", "ponto_onibus", "resolvida", "baixa", 2, 16], ["são paulo", "mooca", "semaforo", "aguardando_aprovacao", "media", 2, 24], ["são paulo", "mooca", "semaforo", "protocolada", "media", 1, 17], ["são paulo", "mooca", "semaforo", "rejeitada", "baixa", 1, 12], ["são paulo", "mooca", "semaforo", "resolvida", "baixa", 1, 10], ["são paulo", "pinheiros", "acessibilidade", "aguardando_aprovacao", "baixa", 1, 2], ["são paulo", "pinheiros", "acessibilidade", "protocolada", "media", 1, 12], ["são paulo", "pinheiros", "acessibilidade", "resolvida", "media", 2, 10], ["são paulo", "pinheiros", "buraco", "aguardando_aprovacao", "alta", 1, 15], ["são paulo", "pinheiros", "buraco", "aguardando_aprovacao", "baixa", 1, 4], ["são paulo", "pinheiros", "buraco", "aprovada", "baixa", 1, 10], ["são paulo", "pinheiros", "buraco", "resolvida", "alta", 1, 16], ["são paulo", "pinheiros", "calcada", "aguardando_aprovacao", "alta", 1, 18], ["são paulo", "pinheiros", "calcada", "aguardando_aprovacao", "media", 1, 0], ["são paulo", "pinheiros", "calcada", "aprovada", "media", 1, 10], ["são paulo", "pinheiros", "calcada", "protocolada", "baixa", 1, 15], ["são paulo", "pinheiros", "calcada", "resolvida", "baixa", 1, 14], ["são paulo", "pinheiros", "calcada", "resolvida", "media", 1, 8], ["são paulo", "pinheiros", "iluminacao", "aprovada", "baixa", 1, 1], ["são paulo", "pinheiros", "iluminacao", "protocolada", "alta", 1, 4], ["são paulo", "pinheiros", "iluminacao", "protocolada", "media", 1, 0], ["são paulo", "pinheiros", "iluminacao", "resolvida", "baixa", 1, 8], ["são paulo", "pinheiros", "iluminacao", "resolvida", "media", 1, 14], ["são paulo", "pinheiros", "lixo", "aguardando_aprovacao", "media", 1, 3], ["são paulo", "pinheiros", "lixo", "protocolada", "baixa", 2, 25], ["são paulo", "pinheiros", "lixo", "rejeitada", "media", 1, 7], ["são paulo", "pinheiros", "outros", "aguardando_aprovacao", "alta", 1, 10], ["são paulo", "pinheiros", "outros", "aguardando_aprovacao", "baixa", 1, 4], ["são paulo", "pinheiros", "outros", "aguardando_aprovacao", "media", 1, 12], ["são paulo", "pinheiros", "outros", "aprovada", "alta", 1, 8], ["são paulo", "pinheiros", "outros", "aprovada", "media", 1, 15], ["são paulo", "pinheiros", "outros", "resolvida", "alta", 1, 0], ["são paulo", "pinheiros", "outros", "resolvida", "baixa", 1, 10], ["são paulo", "pinheiros", "ponto_onibus", "aguardando_aprovacao", "alta", 1, 14], ["são paulo", "pinheiros", "ponto_onibus", "aguardando_aprovacao", "baixa", 1, 2], ["são paulo", "pinheiros", "ponto_onibus", "aguardando_aprovacao", "media", 3, 39], ["são paulo", "pinheiros", "ponto_onibus", "aprovada", "baixa", 1, 9], ["são paulo", "pinheiros", "ponto_onibus", "protocolada", "alta", 1, 15], ["são paulo", "pinheiros", "semaforo", "aguardando_aprovacao", "alta", 1, 9], ["são paulo", "pinheiros", "semaforo", "aguardando_aprovacao", "baixa", 1, 17], ["são paulo", "pinheiros", "semaforo", "aguardando_aprovacao", "media", 1, 10], ["são paulo", "pinheiros", "semaforo", "resolvida", "media", 1, 19], ["são paulo", "santana", "acessibilidade", "aguardando_aprovacao", "media", 1, 15], ["são paulo", "santana", "acessibilidade", "protocolada", "baixa", 1, 9], ["são paulo", "santana", "buraco", "aguardando_aprovacao", "baixa", 1, 2], ["são paulo", "santana", "buraco", "protocolada", "alta", 1, 4], ["são paulo", "santana", "buraco", "protocolada", "media", 1, 5], ["são paulo", "santana", "buraco", "resolvida", "baixa", 1, 10], ["são paulo", "santana", "calcada", "aguardando_aprovacao", "alta", 1, 4], ["são paulo", "santana", "calcada", "aguardando_aprovacao", "baixa", 1, 13], ["são paulo", "santana", "calcada", "aguardando_aprovacao", "media", 1, 10], ["são paulo", "santana", "calcada", "protocolada", "baixa", 1, 9], ["são paulo", "santana", "calcada", "protocolada", "media", 2, 7], ["são paulo", "santana", "calcada", "rejeitada", "media", 1, 17], ["são paulo", "santana", "calcada", "resolvida", "baixa", 1, 2], ["são paulo", "santana", "iluminacao", "aprovada", "media", 1, 8], ["são paulo", "santana", "iluminacao", "protocolada", "baixa", 1, 19], ["são paulo", "santana", "iluminacao", "resolvida", "baixa", 1, 11], ["são paulo", "santana", "lixo", "aguardando_aprovacao", "baixa", 1, 19], ["são paulo", "santana", "lixo", "aguardando_aprovacao", "media", 4, 38], ["são paulo", "santana", "lixo", "aprovada", "baixa", 1, 14], ["são paulo", "santana", "lixo", "aprovada", "media", 1, 17], ["são paulo", "santana", "lixo", "protocolada", "alta", 1, 17], ["são paulo", "santana", "lixo", "protocolada", "baixa", 1, 10], ["são paulo", "santana", "lixo", "resolvida", "alta", 1, 6], ["são paulo", "santana", "lixo", "resolvida", "media", 1, 4], ["são paulo", "santana", "outros", "aguardando_aprovacao", "baixa", 1, 8], ["são paulo", "santana", "outros", "aguardando_aprovacao", "media", 1, 17], ["são paulo", "santana", "outros", "rejeitada", "baixa", 1, 17], ["são paulo", "santana", "outros", "resolvida", "baixa", 1, 3], ["são paulo", "santana", "ponto_onibus", "aguardando_aprovacao", "baixa", 1, 9], ["são paulo", "santana", "ponto_onibus", "aguardando_aprovacao", "media", 1, 7], ["são paulo", "santana", "ponto_onibus", "aprovada", "baixa", 1, 10], ["são paulo", "santana", "ponto_onibus", "aprovada", "media", 2, 14], ["são paulo", "santana", "ponto_onibus", "protocolada", "baixa", 2, 15], ["são paulo", "santana", "ponto_onibus", "resolvida", "media", 1, 18], ["são paulo", "santana", "semaforo", "aguardando_aprovacao", "alta", 1, 17], ["são paulo", "santana", "semaforo", "aguardando_aprovacao", "media", 2, 15], ["são paulo", "santana", "semaforo", "aprovada", "alta", 1, 8], ["são paulo", "santana", "semaforo", "protocolada", "baixa", 1, 19], ["são paulo", "santana", "semaforo", "rejeitada", "baixa", 1, 9], ["são paulo", "santana", "semaforo", "resolvida", "baixa", 1, 10], ["são paulo", "santana", "semaforo", "resolvida", "media", 1, 15]], "ranking": [["santana", 21100, 48, 481, 93.88, "2026-11-17T22:02:56.138494+00:00"], ["lapa", 14100, 42, 405, 81.98, "2026-11-17T22:02:56.138494+00:00"], ["bela vista", 12300, 45, 475, 80.44, "2026-11-17T22:02:56.138494+00:00"], ["pinheiros", 10900, 41, 389, 76.92, "2026-11-17T22:02:56.138494+00:00"], ["ipiranga", 16700, 35, 366, 76.66, "2026-11-17T22:02:56.138494+00:00"], ["mooca", 18400, 29, 304, 69.62, "2026-11-17T22:02:56.138494+00:00"]]}</script>
+<script>
+  const { mode, timestamp, rows, ranking } = JSON.parse(document.getElementById("snapshot").textContent);
+  const format = new Intl.NumberFormat("pt-BR");
+  const scoreFormat = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 });
+  const labels = {
+    calcada: "Calçada", iluminacao: "Iluminação", semaforo: "Semáforo", ponto_onibus: "Ponto de ônibus",
+    acessibilidade: "Acessibilidade", buraco: "Buraco", lixo: "Lixo", outros: "Outros",
+    aguardando_aprovacao: "Aguardando aprovação", aprovada: "Aprovada", rejeitada: "Rejeitada",
+    protocolada: "Protocolada", resolvida: "Resolvida", baixa: "Baixa", media: "Média", alta: "Alta",
+  };
+  const title = value => value.charAt(0).toLocaleUpperCase("pt-BR") + value.slice(1);
+  const area = row => JSON.stringify(row.slice(0, 2));
+  const areaLabel = value => JSON.parse(value).map(title).join(" · ");
+  const filters = [
+    ["area", area, areaLabel], ["category", row => row[2], value => labels[value]],
+    ["status", row => row[3], value => labels[value]], ["urgency", row => row[4], value => labels[value]],
+  ].map(([id, selectValue, label]) => {
+    const select = document.getElementById(id);
+    select.add(new Option("Todos", ""));
+    const values = [...new Set(rows.map(selectValue))].sort((a, b) => label(a).localeCompare(label(b), "pt-BR"));
+    values.forEach(value => select.add(new Option(label(value), value)));
+    return [select, selectValue];
+  });
+  function tbody(id, records, width, empty, numericStart) {
+    const body = document.getElementById(id);
+    body.replaceChildren();
+    if (!records.length) {
+      const cell = body.insertRow().insertCell();
+      cell.colSpan = width;
+      cell.textContent = empty;
+      return;
+    }
+    records.forEach(values => {
+      const row = body.insertRow();
+      values.forEach((value, index) => {
+        const cell = row.insertCell();
+        cell.textContent = value;
+        if (index >= numericStart) cell.className = "num";
+      });
+    });
+  }
+  function update() {
+    const selected = rows.filter(row => filters.every(([select, value]) => !select.value || select.value === value(row)));
+    const count = predicate => selected.reduce((sum, row) => sum + (predicate(row) ? row[5] : 0), 0);
+    const total = count(() => true);
+    document.getElementById("total").textContent = format.format(total);
+    document.getElementById("pending").textContent = format.format(count(row => row[3] === "aguardando_aprovacao"));
+    document.getElementById("critical").textContent = format.format(count(row => row[4] === "alta" && !["rejeitada", "resolvida"].includes(row[3])));
+    document.getElementById("resolved").textContent = total ? scoreFormat.format(100 * count(row => row[3] === "resolvida") / total) + "%" : "0%";
+    tbody("results", selected.map(row => [areaLabel(area(row)), labels[row[2]], labels[row[3]],
+      labels[row[4]], format.format(row[5]), format.format(row[6])]), 6, "Nenhuma ocorrência para estes filtros.", 4);
+  }
+  const date = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" });
+  document.getElementById("source").textContent =
+    (mode === "demo" ? "Demonstração com dados simulados" : "Fonte: API ZelaAí") + " · Lote coletado em " + date.format(new Date(timestamp));
+  tbody("ranking", ranking.map(([bairro, age, count, supports, priority]) =>
+    [title(bairro), format.format(count), format.format(supports), age === null ? "Sem dado" : format.format(age),
+      scoreFormat.format(priority)]), 5, "Nenhum bairro de São Paulo no lote.", 1);
+  filters.forEach(([select]) => select.addEventListener("change", update));
+  update();
+</script>
+</html>

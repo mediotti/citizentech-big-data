@@ -1,0 +1,12 @@
+digraph zelai_ocorrencias {
+	graph [label=zelai_ocorrencias labelloc=t rankdir=LR]
+	carregar [color=white fillcolor=green label=carregar shape=rectangle style="filled,rounded"]
+	ingerir [color=white fillcolor=green label=ingerir shape=rectangle style="filled,rounded"]
+	publicar [color=white fillcolor=green label=publicar shape=rectangle style="filled,rounded"]
+	tratar [color=white fillcolor=green label=tratar shape=rectangle style="filled,rounded"]
+	validar [color=white fillcolor=green label=validar shape=rectangle style="filled,rounded"]
+	carregar -> validar
+	ingerir -> tratar
+	tratar -> carregar
+	validar -> publicar
+}

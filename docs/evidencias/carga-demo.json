@@ -1,0 +1,16 @@
+{
+  "controle_lote": {
+    "origem": "demo",
+    "paginas": 3,
+    "recebidos": 240,
+    "publicados": 240,
+    "rejeitados": 0
+  },
+  "fato_ocorrencia": 240,
+  "mart_ocorrencias": {
+    "linhas": 240,
+    "total_ocorrencias": 240,
+    "total_apoios": 2420
+  },
+  "prioridade_por_bairro": 6
+}

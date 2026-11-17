@@ -1,0 +1,32 @@
+{
+  "ambiente": "API ZelaAí e PostgreSQL locais com ocorrências e contexto distrital fictícios",
+  "endpoint": "GET /indicadores",
+  "codigo_http": 200,
+  "total": 106,
+  "prioridadeBairros": [
+    {
+      "bairro": "bela vista",
+      "populacaoIdosa": 12345,
+      "ocorrencias": 36,
+      "apoios": 0,
+      "scorePrioridade": 47.28,
+      "atualizadoEm": "2026-11-17T22:04:04.422Z"
+    },
+    {
+      "bairro": "lapa",
+      "populacaoIdosa": null,
+      "ocorrencias": 35,
+      "apoios": 0,
+      "scorePrioridade": 45,
+      "atualizadoEm": "2026-11-17T22:04:04.422Z"
+    },
+    {
+      "bairro": "mooca",
+      "populacaoIdosa": 13400,
+      "ocorrencias": 35,
+      "apoios": 0,
+      "scorePrioridade": 42.22,
+      "atualizadoEm": "2026-11-17T22:04:04.422Z"
+    }
+  ]
+}

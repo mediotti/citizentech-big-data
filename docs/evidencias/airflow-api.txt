@@ -1,0 +1,8 @@
+2026-11-17T22:04:04.423396Z  Ingestão concluída: origem=api páginas=2 recebidos=106
+2026-11-17T22:04:04.463323Z  Tratamento concluído: válidos=106 rejeitados=0 motivos={}
+2026-11-17T22:04:04.493832Z  Ranking: bairros=3 com contexto distrital completo=2
+2026-11-17T22:04:04.494309Z  Carga SQLite concluída: fato_ocorrencia=106
+2026-11-17T22:04:04.521523Z  Qualidade aprovada: recebidos=106 publicados=106 apoios=0
+2026-11-17T22:04:04.592975Z  PostgreSQL: prioridade_por_bairro atualizada com 3 bairros
+2026-11-17T22:04:04.593540Z  Painel publicado: origem=api grupos=3
+2026-11-17T22:04:04.604122Z  DagRun Finished: zelai_ocorrencias state=success
