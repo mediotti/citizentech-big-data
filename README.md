@@ -11,7 +11,7 @@
 | Arquitetura | API Node.js no Azure App Service, PostgreSQL, triagem GenAI, OCR, UiPath e pipeline Apache Airflow. |
 | Fontes | Ocorrências do ZelaAí via REST e, quando disponíveis, recortes normalizados de GeoSampa, IBGE e SP156. A demonstração é integralmente simulada. |
 | IA | Triagem de categoria e urgência, com regras de contingência e decisão humana. OCR de comprovantes no backend. O ranking do pipeline usa uma fórmula determinística. |
-| URLs | [API em produção](https://zelai-api.azurewebsites.net/health) · [Swagger](https://zelai-api.azurewebsites.net/docs) · [Repositório da API](https://github.com/Rodriguessz/zelai-api) · [Painel público de demonstração](https://mediotti.github.io/citizentech-big-data/) |
+| URLs | [API em produção](https://zelai-api.azurewebsites.net/health) · [Swagger](https://zelai-api.azurewebsites.net/docs) · [Repositório da API](https://github.com/Rodriguessz/zelai-api) · [Painel de demonstração (HTML)](docs/index.html) |
 | Indicadores | Ocorrências e apoios por bairro, taxa de resolução e prioridade distrital. O backend calcula também o tempo médio até o protocolo 156. |
 | ODS | ODS 9, infraestrutura resiliente (meta 9.1). ODS 10, inclusão (10.2). ODS 11, mobilidade acessível e espaços públicos inclusivos (11.2 e 11.7). |
 
@@ -41,7 +41,7 @@ python -m unittest discover -s tests -v
 python -m http.server 8000 --bind 127.0.0.1 --directory data/public
 ```
 
-Abra [o painel local](http://127.0.0.1:8000/). Para acionar pelo Airflow, rode `airflow standalone` usando o mesmo ambiente, abra [a UI local](http://127.0.0.1:8080/) e encontre `zelai_ocorrencias`. Habilite a DAG para a agenda diária às 6h de São Paulo. O ambiente standalone serve para avaliação local. Execute os workers com armazenamento compartilhado se a orquestração sair de uma única máquina.
+Abra [o painel local](http://127.0.0.1:8000/). Também é possível baixar o [HTML de demonstração](docs/index.html) e abri-lo no navegador. Para acionar pelo Airflow, rode `airflow standalone` usando o mesmo ambiente, abra [a UI local](http://127.0.0.1:8080/) e encontre `zelai_ocorrencias`. Habilite a DAG para a agenda diária às 6h de São Paulo. O ambiente standalone serve para avaliação local. Execute os workers com armazenamento compartilhado se a orquestração sair de uma única máquina.
 
 ## Integração com o ZelaAí
 
