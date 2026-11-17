@@ -19,4 +19,4 @@ A DAG executou contra o backend ZelaAí no commit [c9a6dd5](https://github.com/R
 - [Trecho do log Airflow](airflow-api.txt) · autenticação, paginação e publicação de três bairros.
 - [Resposta sanitizada de GET /indicadores](indicadores-local.json) · o backend devolveu o ranking gravado pela DAG, inclusive um bairro sem dado populacional.
 
-As evidências usam dados fictícios. O modo de produção usa credenciais da equipe e os recortes públicos oficiais podem ser configurados seguindo o README.
+As evidências usam dados fictícios. O modo de produção usa credenciais da equipe e os recortes públicos oficiais podem ser configurados seguindo o [guia de execução](../execucao.md).
