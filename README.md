@@ -5,6 +5,7 @@
 | Campo | Descrição |
 | --- | --- |
 | Produto | ZelaAí, plataforma de zeladoria urbana acessível |
+| Integrantes | RM553377 - Enzo Rodrigues<br>RM552632 - Gabriel Mediotti<br>RM553266 - Hugo Santos<br>RM553384 - Maria Júlia<br>RM553521 - Rafael Cristofali |
 | Cidadão e território | Moradores de São Paulo, com foco em pessoas idosas e pessoas com deficiência |
 | Problema | Falhas no espaço público, como calçadas danificadas e semáforos inoperantes, são difíceis de reportar e acompanhar. |
 | Proposta de valor | O cidadão registra e acompanha a ocorrência. O gestor analisa e aprova com apoio da triagem. O RPA protocola no Portal 156. |
@@ -15,14 +16,9 @@
 | Indicadores | Ocorrências e apoios por bairro, taxa de resolução e prioridade distrital. O backend calcula também o tempo médio até o protocolo 156. |
 | ODS | ODS 9, infraestrutura resiliente (meta 9.1). ODS 10, inclusão (10.2). ODS 11, mobilidade acessível e espaços públicos inclusivos (11.2 e 11.7). |
 
-## Envio no portal da FIAP
+## Entregáveis
 
 **Global Solution 2026.2 · Big Data Architecture & Data Integration · 4ESPR**
-
-Envio por um integrante da equipe até **19/11/2026, às 23h55**, no portal da disciplina.
-
-1. Informe o [link do repositório público](https://github.com/mediotti/citizentech-big-data).
-2. Anexe o [PDF único da entrega](output/pdf/zelai-big-data.pdf).
 
 | Entregável solicitado | Onde encontrar |
 | --- | --- |
