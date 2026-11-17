@@ -15,12 +15,26 @@
 | Indicadores | Ocorrências e apoios por bairro, taxa de resolução e prioridade distrital. O backend calcula também o tempo médio até o protocolo 156. |
 | ODS | ODS 9, infraestrutura resiliente (meta 9.1). ODS 10, inclusão (10.2). ODS 11, mobilidade acessível e espaços públicos inclusivos (11.2 e 11.7). |
 
+## Envio no portal da FIAP
+
 **Global Solution 2026.2 · Big Data Architecture & Data Integration · 4ESPR**
 
-- [PDF de entrega com arquitetura, dicionário e evidências](output/pdf/zelai-big-data.pdf)
-- [Evidências de execução](docs/evidencias/README.md)
+Envio por um integrante da equipe até **19/11/2026, às 23h55**, no portal da disciplina.
 
-## Reprodução
+1. Informe o [link do repositório público](https://github.com/mediotti/citizentech-big-data).
+2. Anexe o [PDF único da entrega](output/pdf/zelai-big-data.pdf).
+
+| Entregável solicitado | Onde encontrar |
+| --- | --- |
+| 1. Pipeline orquestrado e instruções de execução | [DAG do Airflow](dags/zelai_ocorrencias.py), [código do ETL](zelai_data/) e [passo a passo](#1-pipeline-e-instruções-de-execução). |
+| 2. Diagrama de arquitetura e dicionário de dados | [PDF único](output/pdf/zelai-big-data.pdf), páginas 1–4. |
+| 3. Evidências do pipeline em execução | [Grafo, logs, dados carregados e captura do painel](docs/evidencias/README.md). O resumo está na página 5 do PDF. |
+
+**Avaliação** · Pipeline funcional, 8 pontos. Arquitetura e documentação, 6 pontos.
+
+## 1. Pipeline e instruções de execução
+
+### Executar o lote de demonstração
 
 Use Python 3.12 em Linux, macOS ou WSL2. O modo padrão cria 240 ocorrências fictícias em seis bairros e três páginas. A amostra usa semente 42, UUIDs determinísticos e datas fixas para testar paginação, regras e reconciliação sem depender de acesso ao Azure. Os números populacionais e de solicitações do cenário também são simulados.
 
@@ -43,7 +57,7 @@ python -m http.server 8000 --bind 127.0.0.1 --directory data/public
 
 Abra [o painel local](http://127.0.0.1:8000/). Também é possível baixar o [HTML de demonstração](docs/index.html) e abri-lo no navegador. Para acionar pelo Airflow, rode `airflow standalone` usando o mesmo ambiente, abra [a UI local](http://127.0.0.1:8080/) e encontre `zelai_ocorrencias`. Habilite a DAG para a agenda diária às 6h de São Paulo. O ambiente standalone serve para avaliação local. Execute os workers com armazenamento compartilhado se a orquestração sair de uma única máquina.
 
-## Integração com o ZelaAí
+### Integração com o ZelaAí
 
 Configure as variáveis no ambiente de execução do Airflow. Use o gerenciador de segredos da infraestrutura para as credenciais.
 
@@ -60,7 +74,7 @@ Configure as variáveis no ambiente de execução do Airflow. Use o gerenciador 
 
 A integração PostgreSQL é uma substituição transacional do snapshot em `prioridade_por_bairro`, lido pelo backend em `GET /indicadores` no campo `prioridadeBairros`. Lotes aprovados geram o painel e as tabelas locais. Em produção, conecte a DAG ao PostgreSQL do MVP para ativar a integração. O ranking só considera São Paulo por causa do contexto municipal e da chave de bairro definida na migração.
 
-### Contexto territorial
+#### Contexto territorial
 
 Para usar bases públicas, prepare os três CSV em UTF-8 com vírgula e sem colunas extras. Use o mesmo geocódigo distrital nos três arquivos. Preserve no ambiente de dados o período, a URL e a versão de cada extrato.
 
@@ -72,7 +86,7 @@ Para usar bases públicas, prepare os três CSV em UTF-8 com vírgula e sem colu
 
 A DAG lê os recortes tabulares preparados. Sem correspondência, deixa a população nula e recalcula o score com os componentes disponíveis. A população distrital é contexto do bairro e pode se repetir entre bairros do mesmo distrito.
 
-### Qualidade e ranking
+#### Qualidade e ranking
 
 A ingestão valida o total, o tamanho e a sequência das páginas. A transformação aplica os domínios da API, normaliza bairros e converte o dia para São Paulo. IDs repetidos, registros inválidos e falhas de reconciliação bloqueiam a publicação. A paginação por offset depende de uma lista estável durante a extração. Logs registram contagens e motivos sem armazenar respostas integrais, descrições, CEPs, coordenadas, identificadores de cidadãos ou credenciais.
 
@@ -91,7 +105,7 @@ Os pesos e tetos são parâmetros acadêmicos para triagem humana. O score indic
 
 ```sh
 find data/lotes -name zelai.sqlite
-sqlite3 ./data/lotes/<id-do-lote>/zelai.sqlite
+sqlite3 "./data/lotes/ID_DO_LOTE/zelai.sqlite"
 ```
 
 ```sql
@@ -100,3 +114,24 @@ SELECT COUNT(*) FROM fato_ocorrencia;
 SELECT SUM(total), SUM(apoios) FROM mart_ocorrencias;
 SELECT * FROM prioridade_por_bairro ORDER BY score_prioridade DESC;
 ```
+
+## 2. Arquitetura e dicionário de dados
+
+O [PDF único da entrega](output/pdf/zelai-big-data.pdf) reúne a documentação exigida.
+
+| Páginas | Conteúdo |
+| --- | --- |
+| 1 e 2 | Arquitetura em C4. A vista de contexto mostra usuários e sistemas externos. A vista de contêineres mostra o limite do pipeline e os contratos de integração. |
+| 3 e 4 | Dicionário de `fato_ocorrencia`, `prioridade_por_bairro`, `mart_ocorrencias` e `controle_lote`, com tipos, chaves e descrições. |
+| 5 | Evidências da demonstração no Airflow e da integração local com o MVP. |
+
+## 3. Evidências de execução
+
+| Requisito | Evidência verificável |
+| --- | --- |
+| DAG no Airflow | [Grafo exportado da execução](docs/evidencias/airflow-dag.svg) com as cinco tarefas concluídas. |
+| Logs do pipeline | [Execução de demonstração](docs/evidencias/airflow-demo.txt) com 240 registros em três páginas e [teste de integração local](docs/evidencias/airflow-api.txt) com 106 registros em duas páginas. |
+| Dados carregados | [Contagens consultadas no SQLite](docs/evidencias/carga-demo.json) e [ranking retornado por GET /indicadores](docs/evidencias/indicadores-local.json) após a gravação no PostgreSQL local. |
+| Resultado para o avaliador | [Captura do painel gerado](docs/evidencias/painel-demo.png) e [demonstração em HTML](docs/index.html). |
+
+Os dois lotes foram executados com dados fictícios. A integração com PostgreSQL foi validada no backend ZelaAí em ambiente local. Consulte o [índice de evidências](docs/evidencias/README.md) para o contexto de cada execução.
